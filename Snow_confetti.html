@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confetti Animation Demo</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #222; /* Dark background color */
+    }
+
+    button {
+      padding: 15px 20px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <!-- Include canvas-confetti library from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Button to trigger the confetti effect -->
+  <button id="demoButton">Click me for confetti!</button>
+
+  <script>
+    // Function to generate a random number in a specified range
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    // Function to handle button click and trigger confetti effect with random parameters
+    function handleDemoButtonClick() {
+      var scalar = 2;
+      var unicorn = confetti.shapeFromText({ text: '🦄', scalar });
+
+      var defaults = {
+        spread: 360,
+        ticks: 60,
+        gravity: 0,
+        decay: 0.96,
+        startVelocity: 20,
+        shapes: [unicorn],
+        scalar
+      };
+
+      function shoot() {
+        confetti({
+          ...defaults,
+          particleCount: 30
+        });
+
+        confetti({
+          ...defaults,
+          particleCount: 5,
+          flat: true
+        });
+
+        confetti({
+          ...defaults,
+          particleCount: 15,
+          scalar: scalar / 2,
+          shapes: ['circle']
+        });
+      }
+
+      setTimeout(shoot, 0);
+      setTimeout(shoot, 100);
+      setTimeout(shoot, 200);
+    }
+
+    // Attach the function to the button click event
+    document.getElementById('demoButton').addEventListener('click', handleDemoButtonClick);
+  </script>
+
+</body>
+</html>

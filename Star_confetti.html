@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confetti Animation Demo</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #222;
+    }
+
+    button {
+      padding: 15px 20px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <!-- Include canvas-confetti library from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Button to trigger the confetti effect -->
+  <button id="demoButton">Click me for confetti!</button>
+
+  <script>
+    // Function to generate a random number in a specified range
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    // Function to handle button click and trigger confetti effect with random parameters
+    function handleDemoButtonClick() {
+      var duration = 15 * 1000;
+      var animationEnd = Date.now() + duration;
+      var skew = 1;
+
+      function frame() {
+        var timeLeft = animationEnd - Date.now();
+        var ticks = Math.max(200, 500 * (timeLeft / duration));
+        skew = Math.max(0.8, skew - 0.001);
+
+        confetti({
+          particleCount: 1,
+          startVelocity: 0,
+          ticks: ticks,
+          origin: {
+            x: Math.random(),
+            // since particles fall down, skew start toward the top
+            y: (Math.random() * skew) - 0.2
+          },
+          colors: ['#ffffff'],
+          shapes: ['circle'],
+          gravity: randomInRange(0.4, 0.6),
+          scalar: randomInRange(0.4, 1),
+          drift: randomInRange(-0.4, 0.4)
+        });
+
+        if (timeLeft > 0) {
+          requestAnimationFrame(frame);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    // Attach the function to the button click event
+    document.getElementById('demoButton').addEventListener('click', handleDemoButtonClick);
+  </script>
+
+</body>
+</html>
